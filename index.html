@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unduh Video TikTok & Transkrip AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-card: rgba(24, 24, 27, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.14);
+      --text: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-emerald-hover: #34d399;
+      --glow-purple: rgba(139, 92, 246, 0.35);
+      --glow-emerald: rgba(16, 185, 129, 0.35);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 92, 246, 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 40% at 85% 10%, rgba(16, 185, 129, 0.12), transparent 45%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(139, 92, 246, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========== Header ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(9, 9, 11, 0.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 30%, #a78bfa 70%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* ========== Hero ========== */
+    .hero {
+      padding: 4.5rem 0 2.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.85rem, 5vw, 2.65rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ========== Card ========== */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-url {
+      width: 100%;
+      height: 52px;
+      padding: 0 1.15rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--text);
+      background: rgba(9, 9, 11, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-url::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-url:focus {
+      border-color: rgba(139, 92, 246, 0.55);
+      box-shadow: 0 0 0 3px var(--glow-purple);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      height: 52px;
+      padding: 0 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px -4px var(--glow-purple);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #8b5cf6 100%);
+      box-shadow: 0 6px 24px -4px var(--glow-purple);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px -4px var(--glow-emerald);
+      text-decoration: none;
+    }
+
+    .btn-download:hover {
+      background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+      box-shadow: 0 6px 24px -4px var(--glow-emerald);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-hover);
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn.loading .spinner {
+      display: block;
+    }
+
+    .btn.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== Results ========== */
+    .results {
+      display: none;
+      margin-top: 1.5rem;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .results.visible {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .results-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .transcript-box {
+      background: rgba(9, 9, 11, 0.55);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 1rem 1.15rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .transcript-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .transcript-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .transcript-box::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .transcript-segment {
+      display: flex;
+      gap: 0.85rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .transcript-segment:last-child {
+      border-bottom: none;
+    }
+
+    .timestamp {
+      flex-shrink: 0;
+      color: var(--accent-purple);
+      font-weight: 500;
+      min-width: 5.5rem;
+      user-select: none;
+    }
+
+    .segment-text {
+      color: var(--text-secondary);
+      word-break: break-word;
+    }
+
+    .actions-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.15rem;
+      flex-wrap: wrap;
+    }
+
+    .actions-row .btn {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    /* Error */
+    .error-msg {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-top: 0;
+    padding: 0 1.1rem;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: #fca5a5;
+    font-size: 0.9rem;
+    transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease,
+        margin-top 0.35s ease,
+        padding 0.35s ease,
+        border-color 0.25s ease;
+    }
+
+    .error-msg.visible {
+    max-height: 220px;
+    opacity: 1;
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    /* ========== FAQ / Panduan ========== */
+    .faq-section {
+    margin-top: 3.5rem;
+    margin-bottom: 1rem;
+    }
+
+    .faq-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+    text-align: center;
+    }
+
+    .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    }
+
+    .faq-item {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+    }
+
+    .faq-item:hover {
+    border-color: var(--border-hover);
+    }
+
+    .faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    }
+
+    .faq-question:hover {
+    background: rgba(255, 255, 255, 0.03);
+    }
+
+    .faq-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+    content: "";
+    position: absolute;
+    background: var(--text-secondary);
+    transition: transform 0.25s ease, background 0.2s ease;
+    }
+
+    .faq-icon::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    transform: translateY(-50%);
+    }
+
+    .faq-icon::after {
+    top: 0;
+    left: 50%;
+    width: 1.5px;
+    height: 100%;
+    transform: translateX(-50%);
+    }
+
+    .faq-item.open .faq-icon::after {
+    transform: translateX(-50%) rotate(90deg);
+    opacity: 0;
+    }
+
+    .faq-item.open .faq-icon::before {
+    background: var(--accent-purple);
+    }
+
+    .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: 0 1.2rem;
+    }
+
+    .faq-item.open .faq-answer {
+    max-height: 280px;
+    padding: 0 1.2rem 1.15rem;
+    }
+
+    .faq-answer p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      margin-top: 5rem;
+      padding: 2rem 0 2.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.75rem;
+      margin-bottom: 1rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-secondary);
+    }
+
+    .copyright {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .nav-links {
+        gap: 1.1rem;
+      }
+
+      .nav-links a {
+        font-size: 0.85rem;
+      }
+
+      .hero {
+        padding: 3rem 0 2rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+      }
+
+      .actions-row .btn {
+        min-width: 100%;
+      }
+    }
+
+    .footer-disclaimer {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="/" class="logo">TickText</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="#panduan">Panduan</a></li>
+        <li><a href="#api">API</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Unduh Video TikTok &amp; Transkrip AI</h1>
+        <p>Ekstrak video tanpa watermark dan dapatkan transkripsi otomatis berbasis AI dengan akurasi tinggi.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card">
+        <form id="process-form" class="form-group" autocomplete="off">
+          <div class="input-wrapper">
+            <input
+              type="url"
+              id="tiktok-url"
+              class="input-url"
+              placeholder="Tempel tautan TikTok di sini (vt.tiktok.com atau tiktok.com)"
+              required
+              spellcheck="false"
+            />
+          </div>
+          <button type="submit" id="submit-btn" class="btn btn-primary">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Proses Video &amp; Transkrip</span>
+          </button>
+        </form>
+
+        <div id="error-msg" class="error-msg" role="alert"></div>
+
+        <div id="results" class="results">
+          <div class="results-header">
+            <h2 class="results-title">Hasil Transkrip</h2>
+          </div>
+
+          <div id="transcript-box" class="transcript-box" aria-live="polite"></div>
+
+          <div class="actions-row">
+            <a id="download-btn" class="btn btn-download" href="#" download>
+              Unduh Video (No Watermark)
+            </a>
+            <button type="button" id="copy-btn" class="btn btn-secondary">
+              Salin Teks Transkrip
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+        <!-- ========== FAQ SECTION ========== -->
+    <section class="container faq-section" id="panduan">
+      <h2 class="faq-title">Pertanyaan yang Sering Diajukan</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Bagaimana cara menggunakan TickText?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Salin tautan video TikTok, tempel di kolom input di atas, lalu klik tombol "Proses Video & Transkrip". Tunggu beberapa detik hingga proses selesai, lalu unduh video atau salin teks transkripnya.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Apakah video yang diunduh tanpa watermark?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Ya. TickText menggunakan teknik ekstraksi khusus sehingga video yang dihasilkan tidak mengandung watermark TikTok.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Seberapa akurat transkrip AI-nya?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Transkrip dihasilkan menggunakan model AI berbasis Whisper dengan akurasi tinggi. Setiap segmen dilengkapi timestamp sehingga mudah dilacak.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Apakah data atau video saya disimpan?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Tidak. Proses dilakukan secara sementara. Setelah selesai, file dan data tidak disimpan secara permanen di server.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Apakah TickText berbayar?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Saat ini TickText dapat digunakan secara gratis. Tidak ada biaya tersembunyi untuk mengunduh video atau mendapatkan transkrip.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-disclaimer">Kami tidak berafiliasi dengan TikTok, Douyin, atau Bytedance.</p>
+      <ul class="footer-links">
+        <li><a href="#privasi">Kebijakan Privasi</a></li>
+        <li><a href="#ketentuan">Ketentuan Layanan</a></li>
+      </ul>
+      <p class="copyright">&copy; <span id="current-year"></span> TickText &middot; Dibuat oleh tim TickText. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById("process-form");
+    const urlInput = document.getElementById("tiktok-url");
+    const submitBtn = document.getElementById("submit-btn");
+    const resultsEl = document.getElementById("results");
+    const transcriptBox = document.getElementById("transcript-box");
+    const downloadBtn = document.getElementById("download-btn");
+    const copyBtn = document.getElementById("copy-btn");
+    const errorMsg = document.getElementById("error-msg");
+
+    const API_ENDPOINT = "http://127.0.0.1:8000/api/process";
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      const ms = Math.floor((seconds % 1) * 10);
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${ms}`;
+    }
+
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      submitBtn.classList.toggle("loading", isLoading);
+      if (isLoading) {
+        submitBtn.querySelector(".btn-text").textContent = "Memproses Video & AI...";
+      } else {
+        submitBtn.querySelector(".btn-text").textContent = "Proses Video & Transkrip";
+      }
+    }
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.classList.add("visible");
+      resultsEl.classList.remove("visible");
+    }
+
+    function hideError() {
+      errorMsg.classList.remove("visible");
+      errorMsg.textContent = "";
+    }
+
+    function renderTranscript(segments) {
+      if (!Array.isArray(segments) || segments.length === 0) {
+        transcriptBox.innerHTML = '<p style="color: var(--text-muted);">Tidak ada segmen transkrip yang tersedia.</p>';
+        return;
+      }
+
+      transcriptBox.innerHTML = segments
+        .map(
+          (seg) => `
+          <div class="transcript-segment">
+            <span class="timestamp">${formatTime(seg.start)} – ${formatTime(seg.end)}</span>
+            <span class="segment-text">${escapeHtml(seg.text.trim())}</span>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getFullTranscriptText(segments) {
+      if (!Array.isArray(segments)) return "";
+      return segments.map((s) => s.text.trim()).filter(Boolean).join(" ");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideError();
+      resultsEl.classList.remove("visible");
+
+      const url = urlInput.value.trim();
+      if (!url) {
+        showError("Harap masukkan tautan TikTok yang valid.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        });
+
+        if (!response.ok) {
+          let errText = `Server merespons dengan status ${response.status}`;
+          try {
+            const errData = await response.json();
+            if (errData.detail) errText = typeof errData.detail === "string" ? errData.detail : JSON.stringify(errData.detail);
+            else if (errData.message) errText = errData.message;
+          } catch (_) {}
+          throw new Error(errText);
+        }
+
+        const data = await response.json();
+
+        if (data.status !== "success") {
+          throw new Error(data.message || "Proses gagal. Silakan coba lagi.");
+        }
+
+        // Download link
+        if (data.download_url) {
+        downloadBtn.href = data.download_url;
+        downloadBtn.download = data.filename || "TickText_video.mp4";
+        downloadBtn.style.display = "inline-flex";
+        } else {
+          downloadBtn.style.display = "none";
+        }
+
+        // Transcript
+        renderTranscript(data.transcript || []);
+        copyBtn.dataset.transcript = getFullTranscriptText(data.transcript || []);
+
+        resultsEl.classList.add("visible");
+        resultsEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch (err) {
+        console.error(err);
+        const message =
+          err.name === "TypeError"
+            ? "Tidak dapat terhubung ke server. Pastikan backend FastAPI berjalan di http://127.0.0.1:8000"
+            : err.message || "Terjadi kesalahan saat memproses permintaan.";
+        showError(message);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const text = copyBtn.dataset.transcript || "";
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "Tersalin";
+        setTimeout(() => {
+          copyBtn.textContent = original;
+        }, 1800);
+      } catch (_) {
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "Tersalin";
+        setTimeout(() => {
+          copyBtn.textContent = original;
+        }, 1800);
+      }
+    });
+
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+
+      // FAQ Accordion
+    document.querySelectorAll(".faq-question").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains("open");
+
+      // Tutup semua
+      document.querySelectorAll(".faq-item").forEach((el) => el.classList.remove("open"));
+
+      // Buka yang diklik (jika sebelumnya tertutup)
+      if (!isOpen) {
+        item.classList.add("open");
+      }
+    });
+  });
+  </script>
+</body>
+</html>
