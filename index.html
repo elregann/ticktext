@@ -816,9 +816,12 @@
 
         // Download link
         if (data.download_url) {
-        downloadBtn.href = data.download_url;
-        downloadBtn.download = data.filename || "TickText_video.mp4";
-        downloadBtn.style.display = "inline-flex";
+          const baseUrl = API_ENDPOINT.replace("/api/process", "");
+          const cleanDownloadUrl = data.download_url.replace(/^http:\/\/(127\.0\.0\.1|localhost):8000/, baseUrl);
+          
+          downloadBtn.href = cleanDownloadUrl;
+          downloadBtn.download = data.filename || "TickText_video.mp4";
+          downloadBtn.style.display = "inline-flex";
         } else {
           downloadBtn.style.display = "none";
         }
