@@ -818,7 +818,7 @@
         // Download link
         if (data.download_url) {
           const baseUrl = API_ENDPOINT.replace("/api/process", "");
-          const cleanDownloadUrl = data.download_url.replace(/^http:\/\/(127\.0\.0\.1|localhost):8000/, baseUrl);
+          const cleanDownloadUrl = baseUrl + data.download_url;
           
           downloadBtn.href = cleanDownloadUrl;
           downloadBtn.download = data.filename || "TickText_video.mp4";
