@@ -718,7 +718,21 @@
     const copyBtn = document.getElementById("copy-btn");
     const errorMsg = document.getElementById("error-msg");
 
-    const API_ENDPOINT = "https://flower-mom-beads-determines.trycloudflare.com/api/process";
+    let API_ENDPOINT = "";
+
+    // Ambil URL API terbaru dari config.json saat halaman dimuat
+    async function initApi() {
+      try {
+        const response = await fetch("https://raw.githubusercontent.com/elregann/ticktext/main/config.json?cache=" + Date.now());
+        const config = await response.json();
+        API_ENDPOINT = config.api_url + "/api/process";
+        console.log("API Endpoint aktif:", API_ENDPOINT);
+      } catch (err) {
+        console.error("Gagal mengambil endpoint API:", err);
+      }
+    }
+    
+    initApi();
 
     function formatTime(seconds) {
       const m = Math.floor(seconds / 60);
