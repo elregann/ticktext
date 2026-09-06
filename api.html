@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokumentasi API - TickText</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-card: rgba(24, 24, 27, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.14);
+      --text: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-blue: #3b82f6;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 92, 246, 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 40% at 85% 10%, rgba(16, 185, 129, 0.12), transparent 45%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(139, 92, 246, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(9, 9, 11, 0.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 30%, #a78bfa 70%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 3.5rem 0 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.85rem, 5vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 20px 40px -20px rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-post {
+      background: rgba(139, 92, 246, 0.2);
+      color: #a78bfa;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+
+    .badge-get {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .endpoint-path {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .doc-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .doc-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .doc-section h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .doc-section p {
+      color: var(--text-secondary);
+      font-size: 0.925rem;
+      line-height: 1.65;
+    }
+
+    .code-block {
+      background: rgba(9, 9, 11, 0.8);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.15rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e4e4e7;
+      overflow-x: auto;
+      line-height: 1.6;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .code-block code {
+      font-family: inherit;
+    }
+
+    ul.param-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    ul.param-list li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+
+    .param-name {
+      font-family: var(--font-mono);
+      color: var(--accent-emerald);
+      font-weight: 500;
+    }
+
+    .param-type {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 0 2.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.75rem;
+      margin-bottom: 1rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-secondary);
+    }
+
+    .copyright, .footer-disclaimer {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-disclaimer {
+      margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.5rem;
+      }
+      .hero {
+        padding: 2.5rem 0 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">TickText</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="index.html#panduan">Panduan</a></li>
+        <li><a href="api.html">API</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Dokumentasi API</h1>
+        <p>Integrasikan mesin ekstraksi video TikTok dan transkripsi AI ke dalam aplikasi Anda.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <!-- ENDPOINT 1 -->
+      <div class="card">
+        <div class="endpoint-header">
+          <span class="badge badge-post">POST</span>
+          <span class="endpoint-path">/api/process</span>
+        </div>
+
+        <div class="doc-section">
+          <p>Menerima tautan TikTok, mengunduh video tanpa watermark, serta menghasilkan transkripsi audio otomatis menggunakan model AI Faster-Whisper.</p>
+        </div>
+
+        <div class="doc-section">
+          <h3>Request Body (JSON)</h3>
+          <ul class="param-list">
+            <li>
+              <span class="param-name">url</span>
+              <span class="param-type">string (required)</span>
+              <span>— Tautan video TikTok yang valid (misal: <code>https://vt.tiktok.com/...</code>).</span>
+            </li>
+          </ul>
+          <div class="code-block" style="margin-top: 0.75rem;">
+            <pre><code>{
+  "url": "https://vt.tiktok.com/ZSxxxxxx/"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>Response (200 OK)</h3>
+          <div class="code-block">
+            <pre><code>{
+  "status": "success",
+  "download_url": "/api/download/video_a1b2c3d4.mp4",
+  "filename": "TickText_@username.mp4",
+  "transcript": [
+    {
+      "start": 0.0,
+      "end": 2.5,
+      "text": "Halo semuanya, selamat datang kembali!"
+    },
+    {
+      "start": 2.5,
+      "end": 5.1,
+      "text": "Hari ini kita bakal bahas topik menarik..."
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT 2 -->
+      <div class="card">
+        <div class="endpoint-header">
+          <span class="badge badge-get">GET</span>
+          <span class="endpoint-path">/api/download/{filename}</span>
+        </div>
+
+        <div class="doc-section">
+          <p>Mengunduh file video MP4 yang telah berhasil diproses oleh server.</p>
+        </div>
+
+        <div class="doc-section">
+          <h3>Path Parameters</h3>
+          <ul class="param-list">
+            <li>
+              <span class="param-name">filename</span>
+              <span class="param-type">string (required)</span>
+              <span>— Nama file internal yang didapat dari respons <code>download_url</code>.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="doc-section">
+          <h3>Ketentuan &amp; Batasan API</h3>
+          <ul class="param-list" style="gap: 0.5rem;">
+            <li>• Maximum File Size: <strong>200 MB</strong></li>
+            <li>• File TTL (Time-to-Live): <strong>5 Menit</strong> (file akan dihapus otomatis dari server).</li>
+            <li>• CORS Enabled: Bebas diakses dari origin domain mana pun.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-disclaimer">Kami tidak berafiliasi dengan TikTok, Douyin, atau Bytedance.</p>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Kebijakan Privasi</a></li>
+        <li><a href="terms.html">Ketentuan Layanan</a></li>
+      </ul>
+      <p class="copyright">&copy; <span id="current-year"></span> TickText &middot; Dibuat oleh tim TickText. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

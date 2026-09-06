@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kebijakan Privasi - TickText</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-card: rgba(24, 24, 27, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.14);
+      --text: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 92, 246, 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 40% at 85% 10%, rgba(16, 185, 129, 0.12), transparent 45%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(139, 92, 246, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(9, 9, 11, 0.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 30%, #a78bfa 70%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 3.5rem 0 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.85rem, 5vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    }
+
+    .doc-section {
+      margin-bottom: 2rem;
+    }
+
+    .doc-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .doc-section h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .doc-section p {
+      color: var(--text-secondary);
+      font-size: 0.925rem;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-section ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .doc-section li {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .doc-section li::before {
+      content: "•";
+      color: var(--accent-purple);
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 0 2.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.75rem;
+      margin-bottom: 1rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-secondary);
+    }
+
+    .copyright, .footer-disclaimer {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-disclaimer {
+      margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.5rem;
+      }
+      .hero {
+        padding: 2.5rem 0 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">TickText</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="index.html#panduan">Panduan</a></li>
+        <li><a href="api.html">API</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Kebijakan Privasi</h1>
+        <p>Prinsip privasi transparan dan perlindungan data pengguna di TickText.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card">
+        <div class="doc-section">
+          <h2>1. Prinsip Bebas Data (Zero Data Retention)</h2>
+          <p>TickText dirancang dengan komitmen penuh terhadap privasi pengguna. Kami tidak mewajibkan pembuatan akun, tidak meminta informasi pribadi (seperti nama atau email), dan tidak mencatat alamat IP pengguna saat menggunakan layanan ini.</p>
+        </div>
+
+        <div class="doc-section">
+          <h2>2. Pemrosesan Video &amp; Audio Sementara</h2>
+          <p>Setiap tautan TikTok yang dikirimkan hanya diproses saat permintaan dibuat untuk mengekstrak video tanpa watermark dan menghasilkan transkrip AI. File media disimpan sementara di server dan akan dihapus secara otomatis dalam waktu 5 menit melalui sistem pembersihan berkala (TTL).</p>
+        </div>
+
+        <div class="doc-section">
+          <h2>3. Kuki (Cookies) &amp; Pelacakan</h2>
+          <p>Situs ini tidak menggunakan kuki pelacak (*tracking cookies*) maupun skrip analitik pihak ketiga untuk merekam perilaku penelusuran Anda. Penyimpanan lokal di browser hanya digunakan untuk fungsi teknis antarmuka pengguna.</p>
+        </div>
+
+        <div class="doc-section">
+          <h2>4. Infrastruktur &amp; Layanan Pihak Ketiga</h2>
+          <p>Untuk menjalankan layanan secara efisien, kami memanfaatkan infrastruktur pihak ketiga berikut:</p>
+          <ul>
+            <li><strong>GitHub Pages:</strong> Menyajikan antarmuka web statis.</li>
+            <li><strong>Cloudflare Tunnel:</strong> Mengamankan jalur komunikasi jaringan antara antarmuka dan peladen backend.</li>
+          </ul>
+        </div>
+
+        <div class="doc-section">
+          <h2>5. Perubahan Kebijakan</h2>
+          <p>Kebijakan Privasi ini dapat diperbarui sewaktu-waktu sesuai perkembangan teknis platform. Perubahan akan langsung tercermin di halaman ini.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-disclaimer">Kami tidak berafiliasi dengan TikTok, Douyin, atau Bytedance.</p>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Kebijakan Privasi</a></li>
+        <li><a href="terms.html">Ketentuan Layanan</a></li>
+      </ul>
+      <p class="copyright">&copy; <span id="current-year"></span> TickText &middot; Dibuat oleh tim TickText. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
